@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	/* Tema CLARO (por defecto). Canales RGB para usar con rgb(var(--x) / <alpha>). */
+	:root {
+		color-scheme: light;
+		--bg: 246 247 251; /* #f6f7fb */
+		--surface: 255 255 255; /* #ffffff */
+		--border: 230 233 240; /* #e6e9f0 */
+		--text-strong: 14 21 32; /* #0e1520 */
+		--text: 51 65 85; /* #334155 */
+		--text-muted: 94 107 128; /* #5e6b80 */
+		--text-faint: 143 154 172; /* #8f9aac */
+	}
+
+	/* Tema OSCURO siguiendo la configuración del dispositivo. */
+	@media (prefers-color-scheme: dark) {
+		:root {
+			color-scheme: dark;
+			--bg: 11 17 27; /* #0b111b */
+			--surface: 18 26 40; /* #121a28 */
+			--border: 38 47 62; /* #262f3e */
+			--text-strong: 239 242 247; /* #EFF2F7 */
+			--text: 201 208 220; /* #C9D0DC */
+			--text-muted: 152 162 179; /* #98A2B3 */
+			--text-faint: 122 132 151; /* #7A8497 */
+		}
+	}
+
+	html,
+	body {
+		height: 100%;
+	}
+	body {
+		@apply bg-surface-muted text-ink-700 antialiased;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 disabled:cursor-not-allowed disabled:opacity-60;
+	}
+	.btn-primary {
+		@apply btn bg-brand text-white hover:bg-brand-600;
+	}
+	.btn-ghost {
+		@apply btn bg-transparent text-ink-600 hover:bg-surface-border/50;
+	}
+	.card {
+		@apply rounded-2xl border border-surface-border bg-surface shadow-card;
+	}
+	.input {
+		@apply w-full rounded-xl border border-surface-border bg-surface px-3.5 py-2.5 text-sm text-ink-900 placeholder-ink-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/25;
+	}
+	.label {
+		@apply mb-1.5 block text-sm font-medium text-ink-700;
+	}
+	.badge {
+		@apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+	}
+}
