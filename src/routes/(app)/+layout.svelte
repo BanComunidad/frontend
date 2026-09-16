@@ -6,6 +6,6 @@
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<AppShell communities={data.communities} current={data.current}>
+<AppShell communities={data.communities} current={data.current} profile={data.profile}>
 	{@render children()}
 </AppShell>

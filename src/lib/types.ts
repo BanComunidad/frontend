@@ -58,6 +58,24 @@ export type Statement = {
 	summary: StatementSummary;
 };
 
+/** Punto de la serie de evolución de saldo (fecha ISO + saldo en CLP). */
+export type BalancePoint = {
+	date: string;
+	balance: number;
+};
+
+/** Perfil del usuario de la sesión (GET /api/me). */
+export type Profile = {
+	id: string;
+	rut: string;
+	email: string;
+	first_name: string;
+	last_name: string;
+	platform_role: string;
+	mfa_enabled: boolean;
+	pending_email?: string;
+};
+
 export type Attorney = {
 	id: string;
 	type: string;

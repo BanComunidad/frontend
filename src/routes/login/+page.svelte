@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
 	let loading = $state(false);
+	const justReset = $derived($page.url.searchParams.get('reset') === '1');
 </script>
 
 <svelte:head><title>Ingresar · BanComunidad</title></svelte:head>
@@ -29,6 +31,11 @@
 				};
 			}}
 		>
+			{#if justReset}
+				<div class="badge w-full justify-start rounded-xl bg-positive/12 px-3 py-2 text-positive" role="status">
+					Tu contraseña fue actualizada. Ingresa con la nueva.
+				</div>
+			{/if}
 			{#if form?.message}
 				<div class="badge w-full justify-start rounded-xl bg-negative/12 px-3 py-2 text-negative" role="alert">
 					{form.message}
@@ -65,6 +72,10 @@
 			<button class="btn-primary w-full" type="submit" disabled={loading}>
 				{loading ? 'Ingresando…' : 'Ingresar'}
 			</button>
+
+			<a href="/recuperar-clave" class="block text-center text-sm text-ink-500 hover:text-brand">
+				¿Olvidaste tu contraseña?
+			</a>
 		</form>
 
 		<p class="mt-6 text-center text-xs text-ink-400">BanComunidad · acceso seguro</p>

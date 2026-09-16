@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Money from '$lib/components/Money.svelte';
+	import BalanceChart from '$lib/components/BalanceChart.svelte';
 	import { shortDate } from '$lib/format';
 	import type { PageData } from './$types';
 
@@ -49,6 +50,11 @@
 	</div>
 	<button class="btn-primary" type="submit">Filtrar</button>
 </form>
+
+<!-- Evolución del saldo -->
+<div class="mb-4">
+	<BalanceChart points={data.chart} />
+</div>
 
 <!-- Tabla de movimientos -->
 <section class="card overflow-hidden">

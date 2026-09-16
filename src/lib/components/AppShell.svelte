@@ -1,19 +1,43 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Snippet } from 'svelte';
-	import type { Membership } from '$lib/types';
+	import type { Membership, Profile } from '$lib/types';
 
 	let {
 		communities = [],
 		current = null,
+		profile = null,
 		children
-	}: { communities?: Membership[]; current?: Membership | null; children: Snippet } = $props();
+	}: {
+		communities?: Membership[];
+		current?: Membership | null;
+		profile?: Profile | null;
+		children: Snippet;
+	} = $props();
 
 	const nav = [
 		{ href: '/', label: 'Panel' },
 		{ href: '/apoderados', label: 'Apoderados' }
 	];
+
+	const fullName = $derived(
+		profile ? `${profile.first_name} ${profile.last_name}`.trim() : ''
+	);
+	const initials = $derived(
+		profile
+			? `${profile.first_name?.[0] ?? ''}${profile.last_name?.[0] ?? ''}`.toUpperCase() || 'U'
+			: 'U'
+	);
+
+	let menuOpen = $state(false);
+
+	function onWindowClick(e: MouseEvent) {
+		if (!(e.target instanceof Element)) return;
+		if (!e.target.closest('[data-profile-menu]')) menuOpen = false;
+	}
 </script>
+
+<svelte:window onclick={onWindowClick} onkeydown={(e) => e.key === 'Escape' && (menuOpen = false)} />
 
 <div class="min-h-screen">
 	<header class="sticky top-0 z-20 border-b border-surface-border bg-surface/85 backdrop-blur">
@@ -54,9 +78,54 @@
 						<button class="btn-ghost sm:hidden" type="submit">Ir</button>
 					</form>
 				{/if}
-				<form method="POST" action="/logout">
-					<button class="btn-ghost" type="submit">Salir</button>
-				</form>
+
+				<!-- Menú de perfil -->
+				<div class="relative" data-profile-menu>
+					<button
+						type="button"
+						class="flex items-center gap-2 rounded-full border border-surface-border py-1 pl-1 pr-2 text-sm hover:bg-surface-border/40"
+						aria-haspopup="menu"
+						aria-expanded={menuOpen}
+						onclick={() => (menuOpen = !menuOpen)}
+					>
+						<span class="grid h-7 w-7 place-items-center rounded-full bg-brand/10 text-xs font-semibold text-brand">
+							{initials}
+						</span>
+						<span class="hidden max-w-[9rem] truncate text-ink-700 sm:inline">{profile?.first_name ?? 'Cuenta'}</span>
+						<svg class="h-4 w-4 text-ink-400" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+							<path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</button>
+
+					{#if menuOpen}
+						<div
+							class="card absolute right-0 mt-2 w-64 overflow-hidden p-0 shadow-pop"
+							role="menu"
+						>
+							<div class="border-b border-surface-border px-4 py-3">
+								<p class="truncate text-sm font-semibold text-ink-900">{fullName || 'Mi cuenta'}</p>
+								<p class="truncate text-xs text-ink-400">{profile?.email ?? ''}</p>
+							</div>
+							<a
+								href="/perfil"
+								class="block px-4 py-2.5 text-sm text-ink-700 hover:bg-surface-border/40"
+								role="menuitem"
+								onclick={() => (menuOpen = false)}
+							>
+								Mi perfil
+							</a>
+							<form method="POST" action="/logout" class="border-t border-surface-border">
+								<button
+									class="block w-full px-4 py-2.5 text-left text-sm text-negative hover:bg-negative/10"
+									type="submit"
+									role="menuitem"
+								>
+									Salir
+								</button>
+							</form>
+						</div>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</header>
