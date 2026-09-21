@@ -1,0 +1,6 @@
+# El adapter de SvelteKit define publish/functions; aquí solo el build y la versión de Node.
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
