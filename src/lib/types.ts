@@ -83,3 +83,37 @@ export type Attorney = {
 	identification: string;
 	status: string;
 };
+
+export type ContactCategoryKind = 'REMUNERACION' | 'PROVEEDOR' | 'GENERAL';
+
+export type ContactCategory = {
+	id: string;
+	name: string;
+	kind: ContactCategoryKind;
+	status: string;
+};
+
+export type ContactAccountType = 'CTA_CORRIENTE' | 'CTA_VISTA' | 'CUENTA_RUT' | 'CTA_AHORRO';
+
+export type ContactBankAccount = {
+	id: string;
+	bank_name: string;
+	account_type: ContactAccountType;
+	account_num: string;
+	is_default: boolean;
+};
+
+/** Contacto de la libreta de la administradora (reutilizable entre sus comunidades). */
+export type Contact = {
+	id: string;
+	category_id: string;
+	category_name: string;
+	rut: string;
+	name: string;
+	email?: string;
+	phone?: string;
+	role_note?: string;
+	unit_label?: string;
+	status: 'ACTIVE' | 'INACTIVE';
+	accounts?: ContactBankAccount[];
+};
