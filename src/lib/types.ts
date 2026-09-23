@@ -146,7 +146,7 @@ export type Transfer = {
 	signatures: TransferSignature[];
 };
 
-/** Apoderado (usuario con rol ATTORNEY) con acceso a Koin para firmar transferencias. */
+/** Apoderado (usuario con rol ATTORNEY) con acceso a BanComunidad para firmar transferencias. */
 export type Signer = {
 	user_id: string;
 	name: string;

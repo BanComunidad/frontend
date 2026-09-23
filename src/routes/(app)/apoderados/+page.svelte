@@ -89,7 +89,7 @@
 	<section>
 		<div class="mb-2 flex flex-wrap items-center justify-between gap-3">
 			<div>
-				<h2 class="text-sm font-semibold uppercase tracking-wide text-ink-400">Apoderados con acceso a Koin</h2>
+				<h2 class="text-sm font-semibold uppercase tracking-wide text-ink-400">Apoderados con acceso a BanComunidad</h2>
 				<p class="text-sm text-ink-400">Pueden loguearse y firmar transferencias (2 firmas por transferencia).</p>
 			</div>
 			<button class="btn-primary" type="button" onclick={() => (showInvite = !showInvite)}>
@@ -145,7 +145,7 @@
 
 		{#if data.signers.length === 0}
 			<div class="card p-10 text-center text-ink-500">
-				Todavía no hay apoderados con acceso a Koin. Invita al primero.
+				Todavía no hay apoderados con acceso a BanComunidad. Invita al primero.
 			</div>
 		{:else}
 			<section class="card overflow-hidden">
