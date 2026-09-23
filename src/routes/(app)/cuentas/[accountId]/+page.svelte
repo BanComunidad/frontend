@@ -1,10 +1,13 @@
 <script lang="ts">
 	import Money from '$lib/components/Money.svelte';
 	import BalanceChart from '$lib/components/BalanceChart.svelte';
+	import MovementDetailModal from '$lib/components/MovementDetailModal.svelte';
 	import { shortDate } from '$lib/format';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	let modal: MovementDetailModal;
 
 	const typeLabel = (t: string) => (t === 'SAVING' ? 'Ahorro' : 'Cuenta corriente');
 
@@ -73,7 +76,7 @@
 				</thead>
 				<tbody class="divide-y divide-surface-border">
 					{#each data.movements as m (m.id)}
-						<tr class="hover:bg-surface-muted/60">
+						<tr class="cursor-pointer hover:bg-surface-muted/60" onclick={() => modal.open(m)}>
 							<td class="whitespace-nowrap px-5 py-3 text-ink-600">{shortDate(m.date)}</td>
 							<td class="px-5 py-3 text-ink-800">{m.description || '—'}</td>
 							<td class="px-5 py-3">
@@ -108,3 +111,5 @@
 		{/if}
 	</div>
 </div>
+
+<MovementDetailModal bind:this={modal} />
