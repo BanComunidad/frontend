@@ -117,3 +117,39 @@ export type Contact = {
 	status: 'ACTIVE' | 'INACTIVE';
 	accounts?: ContactBankAccount[];
 };
+
+export type TransferStatus = 'PENDING_SIGNATURES' | 'APPROVED' | 'CANCELLED';
+
+export type TransferSignature = {
+	user_id: string;
+	name: string;
+	signed_at: string;
+};
+
+/** Transferencia a un contacto, con su estado de aprobación por doble firma. */
+export type Transfer = {
+	id: string;
+	contact_id: string;
+	contact_name: string;
+	contact_bank_account_id: string;
+	bank_name: string;
+	account_num: string;
+	category_id: string;
+	category_name: string;
+	amount: number;
+	status: TransferStatus;
+	created_by: string;
+	created_by_name: string;
+	created_at: string;
+	approved_at?: string;
+	cancelled_at?: string;
+	signatures: TransferSignature[];
+};
+
+/** Apoderado (usuario con rol ATTORNEY) con acceso a Koin para firmar transferencias. */
+export type Signer = {
+	user_id: string;
+	name: string;
+	email: string;
+	status: string;
+};

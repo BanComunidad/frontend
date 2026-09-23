@@ -25,6 +25,7 @@
 	let showCategories = $state(false);
 	let savingNewContact = $state(false);
 	let savingNewCategory = $state(false);
+	let editingCategoryId = $state<string | null>(null);
 
 	const kindLabel: Record<string, string> = {
 		REMUNERACION: 'Remuneración',
@@ -66,21 +67,64 @@
 		{:else}
 			<div class="mb-5 divide-y divide-surface-border">
 				{#each data.categories as c (c.id)}
-					<div class="flex flex-wrap items-center gap-3 py-3">
-						<span class="min-w-[10rem] flex-1 font-medium text-ink-900">{c.name}</span>
-						<span class="badge bg-brand/10 text-brand">{kindLabel[c.kind] ?? c.kind}</span>
-						<span
-							class="badge {c.status === 'ACTIVE' ? 'bg-positive/10 text-positive' : 'bg-ink-400/15 text-ink-500'}"
+					{#if editingCategoryId === c.id}
+						<form
+							method="POST"
+							action="?/updateCategory"
+							class="flex flex-wrap items-end gap-3 py-3"
+							use:enhance={() => {
+								return async ({ update }) => {
+									editingCategoryId = null;
+									await update();
+								};
+							}}
 						>
-							{c.status === 'ACTIVE' ? 'Activa' : 'Inactiva'}
-						</span>
-						{#if c.status === 'ACTIVE'}
-							<form method="POST" action="?/deactivateCategory" use:enhance>
-								<input type="hidden" name="id" value={c.id} />
-								<button class="btn-ghost !px-3 !py-1.5 text-xs" type="submit">Desactivar</button>
-							</form>
-						{/if}
-					</div>
+							<input type="hidden" name="id" value={c.id} />
+							<div class="flex-1">
+								<label class="label" for="edit-name-{c.id}">Nombre</label>
+								<input id="edit-name-{c.id}" name="name" class="input" value={c.name} required />
+							</div>
+							<div>
+								<label class="label" for="edit-kind-{c.id}">Tipo</label>
+								<select id="edit-kind-{c.id}" name="kind" class="input">
+									<option value="GENERAL" selected={c.kind === 'GENERAL'}>General</option>
+									<option value="PROVEEDOR" selected={c.kind === 'PROVEEDOR'}>Proveedor</option>
+									<option value="REMUNERACION" selected={c.kind === 'REMUNERACION'}>Remuneración</option>
+								</select>
+							</div>
+							<button class="btn-primary !px-3 !py-1.5 text-xs" type="submit">Guardar</button>
+							<button
+								class="btn-ghost !px-3 !py-1.5 text-xs"
+								type="button"
+								onclick={() => (editingCategoryId = null)}
+							>
+								Cancelar
+							</button>
+						</form>
+					{:else}
+						<div class="flex flex-wrap items-center gap-3 py-3">
+							<span class="min-w-[10rem] flex-1 font-medium text-ink-900">{c.name}</span>
+							<span class="badge bg-brand/10 text-brand">{kindLabel[c.kind] ?? c.kind}</span>
+							<span
+								class="badge {c.status === 'ACTIVE' ? 'bg-positive/10 text-positive' : 'bg-ink-400/15 text-ink-500'}"
+							>
+								{c.status === 'ACTIVE' ? 'Activa' : 'Inactiva'}
+							</span>
+							{#if c.status === 'ACTIVE'}
+								<button
+									class="btn-ghost !px-3 !py-1.5 text-xs"
+									type="button"
+									onclick={() => (editingCategoryId = c.id)}
+								>
+									Editar
+								</button>
+								<form method="POST" action="?/deactivateCategory" use:enhance>
+									<input type="hidden" name="id" value={c.id} />
+									<button class="btn-ghost !px-3 !py-1.5 text-xs" type="submit">Desactivar</button>
+								</form>
+							{/if}
+						</div>
+					{/if}
 				{/each}
 			</div>
 		{/if}

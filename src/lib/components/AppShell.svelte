@@ -18,7 +18,8 @@
 	const nav = [
 		{ href: '/', label: 'Panel' },
 		{ href: '/apoderados', label: 'Apoderados' },
-		{ href: '/contactos', label: 'Contactos' }
+		{ href: '/contactos', label: 'Contactos' },
+		{ href: '/transferencias', label: 'Transferencias' }
 	];
 
 	const fullName = $derived(
